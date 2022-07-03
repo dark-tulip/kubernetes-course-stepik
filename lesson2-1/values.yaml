@@ -1,0 +1,2 @@
+namespace: load
+secretName: load-secret

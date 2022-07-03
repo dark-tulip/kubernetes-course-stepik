@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goapp-deployment
+  namespace: lesson1-6
+  labels:
+    app: goapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: goapp
+  template:
+    metadata:
+      labels:
+        app: goapp
+    spec:
+      containers:
+      - name: web
+        image: darktulip/lesson1:v0.2
+        ports:
+        - containerPort: 8080
+        env:
+          - name: SECRETENV
+            valueFrom:
+              secretKeyRef:
+                name: first-secret
+                key: password
+        volumeMounts:
+          - name: cache-volume
+            mountPath: /cache
+            readOnly: true
+      volumes:
+        - name: cache-volume
+          emptyDir: {}

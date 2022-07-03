@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: goapp-deployment
+  namespace: lesson1-6
+  labels:
+    app: goapp
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: goapp
+  template:
+    metadata:
+      labels:
+        app: goapp
+    spec:
+      containers:
+      - name: web
+        image: darktulip/lesson1:v0.2
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+          - name: my-volume
+            mountPath: "/data"
+      volumes:
+        - name: my-volume
+          persistentVolumeClaim:
+            claimName: my-pvc
